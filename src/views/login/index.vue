@@ -76,8 +76,8 @@ export default {
     }
     return {
       loginForm: {
-        mobile: '',
-        password: ''
+        mobile: '13800000002',
+        password: '123456'
       },
       loginRules: {
         mobile: [
@@ -117,14 +117,13 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
+          this.$store.dispatch('user/login', this.loginForm).then((res) => {
             this.$router.push({ path: this.redirect || '/' })
             this.loading = false
           }).catch(() => {
             this.loading = false
           })
         } else {
-          console.log('error submit!!')
           return false
         }
       })

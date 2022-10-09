@@ -12,13 +12,17 @@ NProgress.configure({ showSpinner: false })
 const whiteList = ['/login', '/404']
 
 // 前置守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   NProgress.start()
   // 判断是否有token
   if (store.getters.token) {
     if (to.path === '/login') {
       next('/')
     } else {
+      // 获取用户信息 (有token，并且不是跳转到login页面，才获取)
+      if (!store.getters.userId) {
+        await store.dispatch('user/getUserInfo')
+      }
       next()
     }
   } else {

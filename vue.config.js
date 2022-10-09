@@ -36,7 +36,7 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    // before: require('./mock/mock-server.js')
+    // before: require('./mock/mock-server.js')  // 注释线上mock服务地址
     // 代理配置
     proxy: {
       // 这里的 api 表示如果我们的请求地址以 /api 开头的时候，就出触发代理机制
