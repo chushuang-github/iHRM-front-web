@@ -4,7 +4,7 @@ import router from '@/router'
 import { Message } from 'element-ui'
 import { getTimeStamp } from '@/utils/auth'
 
-// 检测token是否超时
+// 检测token是否超时 (token前端主动介入处理)
 // 超时逻辑  (当前时间  - 缓存中的时间) 是否大于 时间差
 const TimeOut = 3600 // 定义超时时间 (单位：秒)
 function isCheckTimeOut() {
@@ -53,11 +53,13 @@ service.interceptors.response.use(response => {
     return Promise.reject(new Error(message))
   }
 }, error => {
+  // token失效的被动处理
   // error 信息 里面 response的对象 (接口里面code值为10002表示token失效了)
   if (error.response && error.response.data && error.response.data.code === 10002) {
     // 当等于10002的时候 表示 后端告诉我token超时了
-    store.dispatch('user/logout') // 登出action 删除token
+    store.dispatch('user/logout') // 登出action 删除token (权限控制存在，必须先删token，在进行路由跳转)
     router.push('/login')
+    Message.error('登录超时')
   } else {
     Message.error(error.message) // 提示错误信息
   }
