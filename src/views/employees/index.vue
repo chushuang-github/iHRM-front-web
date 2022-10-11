@@ -2,7 +2,7 @@
   <div class="dashboard-container">
     <div class="app-container">
       <h2>
-        首页
+        员工
       </h2>
     </div>
   </div>

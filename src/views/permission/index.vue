@@ -2,7 +2,7 @@
   <div class="dashboard-container">
     <div class="app-container">
       <h2>
-        首页
+        权限管理
       </h2>
     </div>
   </div>

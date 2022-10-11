@@ -29,7 +29,7 @@ service.interceptors.request.use(config => {
       // token没用了 因为超时了
       store.dispatch('user/logout') // 登出操作
       // 跳转到登录页
-      router.push('/login')
+      router.replace(`/login?redirect=${encodeURIComponent(router.currentRoute.fullPath)}`)
       return Promise.reject(new Error('token超时了'))
     }
     // 如果token存在 注入token
@@ -58,7 +58,7 @@ service.interceptors.response.use(response => {
   if (error.response && error.response.data && error.response.data.code === 10002) {
     // 当等于10002的时候 表示 后端告诉我token超时了
     store.dispatch('user/logout') // 登出action 删除token (权限控制存在，必须先删token，在进行路由跳转)
-    router.push('/login')
+    router.replace(`/login?redirect=${encodeURIComponent(router.currentRoute.fullPath)}`)
     Message.error('登录超时')
   } else {
     Message.error(error.message) // 提示错误信息
