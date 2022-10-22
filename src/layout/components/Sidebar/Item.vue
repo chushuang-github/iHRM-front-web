@@ -1,6 +1,8 @@
 <script>
 export default {
   name: 'MenuItem',
+  // vue里面设置了functional为true属性，表示该组件是一个函数式组件
+  // 函数式组件特点：没有data状态，没有this，没有响应式数据，只会接收props属性
   functional: true,
   props: {
     icon: {

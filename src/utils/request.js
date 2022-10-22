@@ -25,11 +25,12 @@ service.interceptors.request.use(config => {
   if (store.getters.token) {
     // 只有在有token的情况下 才有必要去检查时间戳是否超时
     if (isCheckTimeOut()) {
+      let redirect = encodeURIComponent(router.currentRoute.fullPath)
       // 如果它为true表示 token 过期了
       // token没用了 因为超时了
       store.dispatch('user/logout') // 登出操作
       // 跳转到登录页
-      router.replace(`/login?redirect=${encodeURIComponent(router.currentRoute.fullPath)}`)
+      router.replace(`/login?redirect=${redirect}`)
       return Promise.reject(new Error('token超时了'))
     }
     // 如果token存在 注入token
@@ -57,8 +58,9 @@ service.interceptors.response.use(response => {
   // error 信息 里面 response的对象 (接口里面code值为10002表示token失效了)
   if (error.response && error.response.data && error.response.data.code === 10002) {
     // 当等于10002的时候 表示 后端告诉我token超时了
+    let redirect = encodeURIComponent(router.currentRoute.fullPath)
     store.dispatch('user/logout') // 登出action 删除token (权限控制存在，必须先删token，在进行路由跳转)
-    router.replace(`/login?redirect=${encodeURIComponent(router.currentRoute.fullPath)}`)
+    router.replace(`/login?redirect=${redirect}`)
     Message.error('登录超时')
   } else {
     Message.error(error.message) // 提示错误信息
