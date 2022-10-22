@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-container">
+  <div v-loading="loading" class="dashboard-container">
     <div class="app-container">
       <el-card class="tree-card">
         <!-- 用了一个行列布局 -->
@@ -50,6 +50,7 @@ export default {
       },
       showDialog: false,
       node: null, // 当前操作的节点
+      loading: false // 用来控制进度弹层的显示和隐藏
     };
   },
   mounted() {
@@ -58,6 +59,7 @@ export default {
   methods: {
     // 获取列表
     async getDepartmentsList() {
+      this.loading = true
       const res = await getDepartments()
       this.company = {
         name: res.companyName,
@@ -65,6 +67,7 @@ export default {
         id: ""
       }
       this.departs = tranListToTreeData(res.depts)
+      this.loading = false
     },
     // 新增
     handleAdd(treeNode) {
