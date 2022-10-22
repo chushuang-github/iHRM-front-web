@@ -15,7 +15,7 @@
             </el-row>
 
             <!-- 表格 -->
-            <el-table border="" :data="list">
+            <el-table border :data="list">
               <el-table-column type="index" label="序号" align="center" width="70" />
               <el-table-column prop="name" label="角色名称" align="center" width="240" />
               <el-table-column prop="description" label="描述" align="center" />

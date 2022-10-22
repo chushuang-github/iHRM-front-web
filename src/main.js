@@ -6,8 +6,16 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
+// 自定义组件
+import Components from '@/components'
+
 import '@/styles/index.scss' // global css
+
+// 自定义指令
 import * as directives from '@/directives'
+
+// 过滤器
+import * as filters from '@/filters'
 
 import App from './App'
 import store from './store'
@@ -20,6 +28,7 @@ import '@/permission' // permission control
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
+Vue.use(Components)
 
 Vue.config.productionTip = false
 
@@ -28,6 +37,11 @@ Vue.config.productionTip = false
 Object.keys(directives).forEach(key => {
   // 注册自定义指令
   Vue.directive(key, directives[key])
+})
+
+// 注册自定义过滤器
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
 })
 
 new Vue({
