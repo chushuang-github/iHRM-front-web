@@ -6,7 +6,7 @@
         <template v-slot:after>
           <el-button size="small" type="warning">导入excel</el-button>
           <el-button size="small" type="danger">导出excel</el-button>
-          <el-button size="small" type="primary">新增员工</el-button>
+           <el-button icon="plus" type="primary" size="small" @click="showDialog = true">新增员工</el-button>
         </template>
       </page-tools>
 
@@ -15,6 +15,7 @@
         <el-table border :data="list" v-loading="loading">
           <el-table-column type="index" label="序号" width="50" />
           <el-table-column prop="username" label="姓名" sortable="" />
+          <el-table-column prop="mobile" label="手机号" sortable="" />
           <el-table-column prop="workNumber" label="工号" sortable="" />
           <el-table-column
             prop="formOfEmployment"
@@ -35,13 +36,13 @@
             </template>
           </el-table-column>
           <el-table-column label="操作" fixed="right" width="280">
-            <template>
+            <template slot-scope="{ row }">
               <el-button type="text" size="small">查看</el-button>
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
               <el-button type="text" size="small">角色</el-button>
-              <el-button type="text" size="small">删除</el-button>
+              <el-button type="text" size="small" @click="handleDelete(row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -57,14 +58,21 @@
         </el-row>
       </el-card>
     </div>
+
+    <!-- 弹层 -->
+    <add-employee :showDialog.sync="showDialog" />
   </div>
 </template>
 
 <script>
-import { getEmployeeList } from '@/api/employees'
+import AddEmployee from './components/add-employee'
+import { getEmployeeList, delEmployee } from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
 
 export default {
+  components: {
+    AddEmployee
+  },
   data() {
     return {
       list: [],
@@ -73,7 +81,8 @@ export default {
         pagesize: 10,
         total: 0
       },
-      loading: false
+      loading: false,
+      showDialog: false
     }
   },
   created() {
@@ -93,9 +102,25 @@ export default {
     },
     // 格式化table列数据
     formatEmployment(row, column, cellValue, index) {
-      const obj = EmployeeEnum.hireType.find(item => item.id === cellValue)
+      const obj = EmployeeEnum.hireType.find(item => item.id == cellValue)
       return obj ? obj.value : '未知'
-    }
+    },
+    // 删除
+    async handleDelete(row) {
+      this.$confirm('您确定要删除该员工吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        return delEmployee(row.id)
+      }).then(() => {
+        this.getEmployeeList()
+        this.$message({
+          type: 'success',
+          message: '删除员工成功!'
+        })
+      }).catch(() => {})
+    },
   }
 }
 </script>
