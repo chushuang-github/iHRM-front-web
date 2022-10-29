@@ -4,9 +4,10 @@
       <page-tools :showBefore="true">
         <span slot="before">共{{ page.total }}条记录</span>
         <template v-slot:after>
-          <el-button size="small" type="warning">导入excel</el-button>
-          <el-button size="small" type="danger">导出excel</el-button>
-           <el-button icon="plus" type="primary" size="small" @click="showDialog = true">新增员工</el-button>
+          <el-button size="small" type="warning" @click="uploadExcelBtnFn">导入excel</el-button>
+          <el-button size="small" type="danger" @click="downloadExcel">普通excel导出</el-button>
+          <el-button size="small" type="info" @click="exportMutiData">复杂表头excel导出</el-button>
+          <el-button icon="plus" type="primary" size="small" @click="showDialog = true">新增员工</el-button>
         </template>
       </page-tools>
 
@@ -67,6 +68,7 @@
 <script>
 import AddEmployee from './components/add-employee'
 import { getEmployeeList, delEmployee } from '@/api/employees'
+import { formatDate } from '@/filters'
 import EmployeeEnum from '@/api/constant/employees'
 
 export default {
@@ -120,6 +122,84 @@ export default {
           message: '删除员工成功!'
         })
       }).catch(() => {})
+    },
+    // 导入excel按钮
+    uploadExcelBtnFn() {
+      this.$router.push('/excel')
+    },
+    // 格式化json数据
+    formatJson(headers, rows) {
+      return rows.map(item => {
+        return Object.keys(headers).map(key => {
+          // key是中文 headers[key]是英文 // item是 英文 {username: '张三', mobile: 123}
+          if (headers[key] === 'timeOfEntry' || headers[key] === 'correctionTime') {
+            // 如果是日期的话 就需要格式化日期
+            let time = item[headers[key]]
+            if(!time) return time
+            return formatDate(time)
+          } else if (headers[key] === 'formOfEmployment') {
+            // 要把聘用形式转化成文本
+            const obj = EmployeeEnum.hireType.find(o => o.id === item[headers[key]])
+            return obj ? obj.value : '未知'
+          }
+          return item[headers[key]]
+        })
+      })
+    },
+    // 普通excel导出
+    downloadExcel() {
+      import('@/vendor/Export2Excel').then(async (excel) => {
+        // 定义对应关系 - 把英文的key转化成中文的key所对应的值
+        const headers = {
+          '姓名': 'username',
+          '手机': 'mobile',
+          '入职日期': 'timeOfEntry',
+          '聘用形式': 'formOfEmployment',
+          '转正日期': 'correctionTime',
+          '工号': 'workNumber',
+          '部门': 'departmentName'
+        }
+        const { rows } = await getEmployeeList({ page: 1, size: this.page.total })
+        // data格式二维数组：[[姓名, 手机, 入职日期, 聘用形式, 转正日期, 工号, 部门], [], [], ...]
+        const data = this.formatJson(headers, rows) // 转化数据表结构
+        excel.export_json_to_excel({
+          header: Object.keys(headers),
+          data,
+          filename: 'ihrm人力资源用户表', // 非必填
+          autoWidth: true, // 非必填
+          bookType: 'xlsx' // 非必填
+        })
+      })
+    },
+    // 复杂表头excel导出
+    exportMutiData() {
+      import('@/vendor/Export2Excel').then(async (excel) => {
+        // 定义对应关系 - 把英文的key转化成中文的key所对应的值
+        const headers = {
+          '姓名': 'username',
+          '手机': 'mobile',
+          '入职日期': 'timeOfEntry',
+          '聘用形式': 'formOfEmployment',
+          '转正日期': 'correctionTime',
+          '工号': 'workNumber',
+          '部门': 'departmentName'
+        }
+        const { rows } = await getEmployeeList({ page: 1, size: this.page.total })
+        // data格式二维数组：[[姓名, 手机, 入职日期, 聘用形式, 转正日期, 工号, 部门], [], [], ...]
+        const data = this.formatJson(headers, rows) // 转化数据表结构
+        excel.export_json_to_excel({
+          header: Object.keys(headers),
+          data,
+          filename: 'ihrm人力资源用户表', // 非必填
+          autoWidth: true, // 非必填
+          bookType: 'xlsx', // 非必填
+          // mutiHeader中表头的长度必须和header的表头长度是对应的 否则报错
+          // 复杂表头的导出 数组中的一个数组 就是一行表头
+          multiHeader: [['姓名', '主要信息', '', '', '', '', '部门']],
+          // 合并列  不用区分顺序 只写合并的单元格的顺序号
+          merges: ['A1:A2', 'B1:F1', 'G1:G2']
+        })
+      })
     },
   }
 }

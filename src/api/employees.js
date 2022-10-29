@@ -31,3 +31,12 @@ export function delEmployee(id) {
     data
   })
 }
+
+// 封装一个批量导入员工的接口 (data是一个数组)
+ export function importEmployee(data) {
+  return request({
+    url: '/sys/user/batch',
+    method: 'post',
+    data
+  })
+}

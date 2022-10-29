@@ -6,13 +6,12 @@
  * @param {string} label
  * @return {string}
  */
- function pluralize(time, label) {
+function pluralize(time, label) {
   if (time === 1) {
     return time + label
   }
   return time + label + 's'
 }
-
 /**
  * @param {number} time
  */
@@ -272,6 +271,7 @@ export function checkQq(value, callback) {
   var reg = /^[0-9]+$/g
   return reg.test(value)
 }
+
 // 银行卡号
 export function formatBankNo(BankNo, callback) {
   var strBin = '10,18,30,35,37,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,58,60,62,65,68,69,84,87,88,94,95,98,99'
