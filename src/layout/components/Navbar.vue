@@ -8,6 +8,8 @@
     </div>
 
     <div class="right-menu">
+      <!-- 放置全屏图标 -->
+      <screen-full class="right-menu-item" />
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img v-imagerror="defaultImg" :src="staffPhoto" class="user-avatar">
@@ -76,7 +78,24 @@ export default {
   position: relative;
   background-image: -webkit-linear-gradient(left, #3d6df8, #5b8cff);
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
-
+.app-breadcrumb {
+  display: inline-block;
+  font-size: 18px;
+  line-height: 50px;
+  margin-left: 10px;
+  color: #ffffff;
+  cursor: text;
+  .breadBtn {
+    background: #84a9fe;
+    font-size: 14px;
+    padding: 0 10px;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 10px;
+    margin-left: 15px;
+  }
+}
   .hamburger-container {
     line-height: 46px;
     height: 100%;
@@ -87,26 +106,6 @@ export default {
 
     &:hover {
       background: rgba(0, 0, 0, .025)
-    }
-  }
-
-  .app-breadcrumb {
-    display: inline-block;
-    font-size: 18px;
-    line-height: 50px;
-    margin-left: 10px;
-    color: #ffffff;
-    cursor: text;
-
-    .breadBtn {
-      background: #84a9fe;
-      font-size: 14px;
-      padding: 0 10px;
-      display: inline-block;
-      height: 30px;
-      line-height: 30px;
-      border-radius: 10px;
-      margin-left: 15px;
     }
   }
 
@@ -123,39 +122,13 @@ export default {
       outline: none;
     }
 
-    .avatar-wrapper {
-      // margin-top: 5px;
-      position: relative;
-
-      // name
-      .name {
-        color: #fff;
-        vertical-align: middle;
-        margin-left:5px;
-      }
-
-      .user-dropdown {
-        color: #fff;
-      }
-
-      // 下拉 icon 图标位置
-      .el-icon-caret-bottom {
-        cursor: pointer;
-        position: absolute;
-        right: -20px;
-        top: 20px;
-        font-size: 12px;
-        color: #fff;
-      }
-    }
-
     .right-menu-item {
       display: inline-block;
       padding: 0 8px;
       height: 100%;
       font-size: 18px;
       color: #5a5e66;
-      vertical-align: text-bottom;
+      vertical-align: middle;
 
       &.hover-effect {
         cursor: pointer;
@@ -174,14 +147,21 @@ export default {
         margin-top: 5px;
         position: relative;
 
-        // 头像
         .user-avatar {
           cursor: pointer;
           width: 30px;
           height: 30px;
           border-radius: 15px;
           vertical-align: middle;
-          margin-right: 10px;
+          margin-left: 10px;
+        }
+        .name {
+          color: #fff;
+          vertical-align: middle;
+          margin-left:5px;
+        }
+        .user-dropdown {
+          color: #fff;
         }
 
         .el-icon-caret-bottom {
@@ -190,6 +170,7 @@ export default {
           right: -20px;
           top: 25px;
           font-size: 12px;
+           color: #fff;
         }
       }
     }

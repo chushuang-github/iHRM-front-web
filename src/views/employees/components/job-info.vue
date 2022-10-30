@@ -7,14 +7,6 @@
         <el-form-item label="岗位">
           <el-input v-model="formData.post" placeholder="请输入" class="inputW" />
         </el-form-item>
-        <!-- <el-form-item label="转正日期">
-          <el-date-picker
-            v-model="formData.dateOfCorrection"
-            type="date"
-            placeholder="选择日期"
-            value-format="yyyy-MM-dd"
-          />
-        </el-form-item> -->
         <el-form-item label="转正状态">
           <el-select v-model="formData.stateOfCorrection" placeholder="请选择" disabled>
             <el-option
