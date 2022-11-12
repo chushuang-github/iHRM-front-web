@@ -23,8 +23,8 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-dialog :visible="showDialog" title="新增编辑" @close="btnCancel">
-      <el-form ref="perForm" :model="formData" :rules="rules" label-width="120px">
+    <el-dialog :visible="showDialog" :title="showTitle + '权限'" @close="btnCancel">
+      <el-form ref="perForm" :model="formData" :rules="rules" label-width="120px" v-loading="loading">
         <el-form-item label="权限名称" prop="name">
           <el-input v-model="formData.name" style="width:90%" />
         </el-form-item>
@@ -83,6 +83,11 @@ export default {
   },
   mounted() {
     this.getPermissionList()
+  },
+  computed: {
+    showTitle() {
+      return this.formData.id ? "编辑" : "新增"
+    }
   },
   methods: {
     async getPermissionList() {
@@ -145,8 +150,10 @@ export default {
     // 编辑数据回显
     async editPermission(id) {
       // 根据获取id获取详情
-      this.formData = await getPermissionDetail(id)
       this.showDialog = true
+      this.loading = true
+      this.formData = await getPermissionDetail(id)
+      this.loading = false
     }
   }
 }
