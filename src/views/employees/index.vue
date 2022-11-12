@@ -55,7 +55,7 @@
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small">角色</el-button>
+              <el-button type="text" size="small" @click="handleRole(row)">角色</el-button>
               <el-button type="text" size="small" @click="handleDelete(row)">删除</el-button>
             </template>
           </el-table-column>
@@ -73,7 +73,7 @@
       </el-card>
     </div>
 
-    <!-- 弹层 -->
+    <!-- 新增员工 -->
     <add-employee :showDialog.sync="showDialog" />
 
     <!-- 二维码弹窗 -->
@@ -82,11 +82,15 @@
         <canvas ref="myCanvas" />
       </el-row>
     </el-dialog>
+
+    <!-- 分配角色 -->
+    <assign-role ref="assignRole" :showRoleDialog.sync="showRoleDialog" :userId="userId" />
   </div>
 </template>
 
 <script>
 import AddEmployee from './components/add-employee'
+import AssignRole from './components/assign-role.vue'
 import { getEmployeeList, delEmployee } from '@/api/employees'
 import { formatDate } from '@/filters'
 import EmployeeEnum from '@/api/constant/employees'
@@ -95,7 +99,8 @@ import QrCode from 'qrcode'
 
 export default {
   components: {
-    AddEmployee
+    AddEmployee,
+    AssignRole
   },
   data() {
     return {
@@ -108,7 +113,9 @@ export default {
       loading: false,
       showDialog: false,
       defaultImg,
-      showCodeDialog: false
+      showCodeDialog: false,
+      showRoleDialog: false,
+      userId: null
     }
   },
   created() {
@@ -225,6 +232,7 @@ export default {
         })
       })
     },
+    // 二维码
     showQrCode(url) {
       // url存在的情况下 才弹出层
       if (url) {
@@ -240,6 +248,12 @@ export default {
       } else {
         this.$message.warning('该用户还未上传头像')
       }
+    },
+    // 角色
+    handleRole(row) {
+      this.showRoleDialog = true
+      this.userId = row.id
+      this.$refs.assignRole.getUserDetailById(row.id) // 父组件调用子组件方法
     }
   }
 }
