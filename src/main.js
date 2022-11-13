@@ -1,26 +1,22 @@
 import Vue from 'vue'
-
-import 'normalize.css/normalize.css' // A modern alternative to CSS resets
-
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import locale from 'element-ui/lib/locale/lang/en' // lang i18n
-
 // 自定义组件
 import Components from '@/components'
-
-import '@/styles/index.scss' // global css
-
 // 自定义指令
 import * as directives from '@/directives'
-
 // 过滤器
 import * as filters from '@/filters'
+// 混入
+import checkPermissionMixin from '@/mixin/checkPermission'
 
 import App from './App'
 import store from './store'
 import router from './router'
 
+import 'normalize.css/normalize.css' // A modern alternative to CSS resets
+import '@/styles/index.scss' // global css
 import '@/icons' // icon
 import '@/permission' // permission control
 
@@ -43,6 +39,9 @@ Object.keys(directives).forEach(key => {
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
+
+// 混入
+Vue.mixin(checkPermissionMixin)
 
 new Vue({
   el: '#app',

@@ -1,5 +1,6 @@
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
 import { getToken, setToken, removeToken, setTimeStamp } from '@/utils/auth'
+import { resetRouter } from '@/router'
 
 const state = {
   token: getToken(),
@@ -53,6 +54,14 @@ const actions = {
     context.commit('removeToken')
     // 删除用户资料
     context.commit('removeUserInfo') // 删除用户信息
+    // 重置路由
+    resetRouter()
+    // 还有一步，vuex中的数据是不是还在，要清空permission模块下的state数据
+    // vuex中 user子模块 调用 permission子模块里面的muatations
+    // 默认情况下，子模块的context是子模块的
+    // 子模块 调用 子模块的actions或者mutations，可以将dispatch 或者 commit的第三个参数 设置成{ root: true }
+    // root设置为ture，表示当前的context为根模块的context
+    context.commit('permission/setRoutes', [], { root: true })
   }
 }
 

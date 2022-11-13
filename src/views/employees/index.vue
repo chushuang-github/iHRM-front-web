@@ -6,8 +6,9 @@
         <template v-slot:after>
           <el-button size="small" type="warning" @click="uploadExcelBtnFn">导入excel</el-button>
           <el-button size="small" type="danger" @click="downloadExcel">普通excel导出</el-button>
-          <el-button size="small" type="info" @click="exportMutiData">复杂表头excel导出</el-button>
+          <el-button size="small" type="success" @click="exportMutiData">复杂表头excel导出</el-button>
           <el-button icon="plus" type="primary" size="small" @click="showDialog = true">新增员工</el-button>
+          <el-button type="info" :disabled="!checkPermission('role')">权限按钮测试(role)</el-button>
         </template>
       </page-tools>
 

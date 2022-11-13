@@ -78,7 +78,8 @@ export default {
         name: [{ required: true, message: '权限名称不能为空', trigger: 'blur' }],
         code: [{ required: true, message: '权限标识不能为空', trigger: 'blur' }]
       },
-      showDialog: false
+      showDialog: false,
+      loading: false
     }
   },
   mounted() {

@@ -58,24 +58,24 @@ export const constantRoutes = [
       path: '',
       component: () => import('@/views/excel')
     }]
-  },
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  }
 ]
 
 // 执行createRouter方法，实例化路由对象
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: [...constantRoutes, ...asyncRoutes]
+  routes: [...constantRoutes]
 })
 
 const router = createRouter()
 
+// 重置路由
+// 这个方法就是将路由重新实例化，相当于换了一个新的路由，之前加的路由自然不存在了
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
   const newRouter = createRouter()
-  router.matcher = newRouter.matcher // reset router
+  router.matcher = newRouter.matcher // 重新设置路由的可匹配路径
 }
 
 export default router
