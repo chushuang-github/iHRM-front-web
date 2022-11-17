@@ -15,15 +15,13 @@ import ScreenFull from 'screenfull'
 export default {
   methods: {
     changeScreen() {
-      // js的方式
-      // esc退出
-      // document.documentElement.requestFullscreen()
+      // esc退出全屏
       if (!ScreenFull.isEnabled) {
         // 如果不可用  就提示 并且返回
-        this.$message.warning('当前全局组件不可用')
-        return
+        return this.$message.warning('当前全局组件不可用')
       }
-      //  document.documentElement.requestFullscreen()   document.exitFullscreen 退出
+      // document.documentElement.requestFullscreen()
+      // document.exitFullscreen 退出
       ScreenFull.toggle() // 执行全屏 展开 关闭
     }
   }
