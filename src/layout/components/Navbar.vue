@@ -3,15 +3,17 @@
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
     <div class="app-breadcrumb">
-      江苏传智播客教育科技股份有限公司
+      {{ $t('navbar.companyName') }}
       <span class="breadBtn">体验版</span>
     </div>
 
     <div class="right-menu">
       <!-- 放置全屏图标 -->
       <screen-full class="right-menu-item" />
-      <!--  -->
+      <!-- 动态主题 -->
       <theme-picker class="right-menu-item" />
+      <!-- 多语言包 -->
+      <lang class="right-menu-item" />
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img v-imagerror="defaultImg" :src="staffPhoto" class="user-avatar">

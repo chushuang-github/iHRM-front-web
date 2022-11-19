@@ -4,6 +4,8 @@ import UploadExcel from './UploadExcel'
 import ScreenFull from './ScreenFull'
 import ImageUpload from './ImageUpload'
 import ThemePicker from './ThemePicker'
+import Lang from './Lang'
+import TagsView from './TagsView'
 
 // 第三方插件实现
 import Print from 'vue-print-nb'
@@ -17,6 +19,8 @@ export default {
     Vue.component('ScreenFull', ScreenFull)
     Vue.component('ImageUpload', ImageUpload)
     Vue.component('ThemePicker', ThemePicker)
+    Vue.component('Lang', Lang)
+    Vue.component('TagsView', TagsView)
     // 注册好打印插件，会有一个 v-print 指令的方式进行打印
     Vue.use(Print)
     // dom结构生成pdf的插件

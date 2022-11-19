@@ -3,7 +3,11 @@
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
-          <item :icon="onlyOneChild.meta.icon||(item.meta && item.meta.icon)" :title="onlyOneChild.meta.title" />
+          <!-- 当我们全局注册i18n的时候，每个组件都会拥有一个 $t() 的方法，它会根据传入的key，自动的去寻找当前语言的文本 -->
+          <item
+            :icon="onlyOneChild.meta.icon||(item.meta && item.meta.icon)"
+            :title="$t(`route.${onlyOneChild.name}`)"
+          />
         </el-menu-item>
       </app-link>
     </template>
