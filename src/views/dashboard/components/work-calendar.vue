@@ -50,7 +50,7 @@ export default {
       yearList: [] // 遍历年的数组
     }
   },
-  created() {
+  mounted() {
     this.currentYear = this.startDate.getFullYear()
     this.currentMonth = this.startDate.getMonth() + 1
     this.yearList = Array.from(Array(11), (v, i) => i + this.currentYear - 5)
